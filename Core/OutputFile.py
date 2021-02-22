@@ -25,21 +25,22 @@ class OutputFile:
 
         matchedFirst = -1
         matchedLast = 0
-        for overlap in anchor.overlaps:
+        if anchor is not None:
+            for overlap in anchor.overlaps:
 
-            matchedLast = overlap.referenceIndex[0] + len(overlap.kMer)
-            if matchedFirst == -1:
-                matchedFirst = overlap.referenceIndex[0]
+                matchedLast = overlap.referenceIndex[0] + len(overlap.kMer)
+                if matchedFirst == -1:
+                    matchedFirst = overlap.referenceIndex[0]
 
-            symbols[overlap.referenceIndex[0]:overlap.referenceIndex[0] + len(overlap.kMer) + 1] \
-                = ['|'] * (overlap.referenceIndex[1] - overlap.referenceIndex[0] + self.kMerSize)
-            anchorWithMismatch[overlap.referenceIndex[0]:overlap.referenceIndex[0] + len(overlap.kMer) + 1] \
-                = overlap.kMer[:]
+                symbols[overlap.referenceIndex[0]:overlap.referenceIndex[0] + len(overlap.kMer) + 1] \
+                    = ['|'] * (overlap.referenceIndex[1] - overlap.referenceIndex[0] + self.kMerSize)
+                anchorWithMismatch[overlap.referenceIndex[0]:overlap.referenceIndex[0] + len(overlap.kMer) + 1] \
+                    = overlap.kMer[:]
 
-            if matchedFirst != -1:
-                anchorWithMismatch[:matchedFirst] = [' '] * matchedFirst
+                if matchedFirst != -1:
+                    anchorWithMismatch[:matchedFirst] = [' '] * matchedFirst
 
-            anchorWithMismatch[matchedLast:] = [' '] * (querySequenceLength - (querySequenceLength - matchedLast))
+                anchorWithMismatch[matchedLast:] = [' '] * (querySequenceLength - (querySequenceLength - matchedLast))
 
         for symbol in symbols:
             self.file.write(symbol)
@@ -60,10 +61,11 @@ class OutputFile:
         self.file.write('\n')
         self.file.write('\n')
 
-        for ove in anchor.overlaps:
-            self.file.write('Reference: [' + repr(ove.referenceIndex[0]) + ', ' + repr(
-                ove.referenceIndex[1] + self.kMerSize - 1) + '] and Query: [' + repr(
-                ove.queryIndex[0]) + ', ' + repr(ove.queryIndex[1] + self.kMerSize - 1) + ']\n')
+        if anchor is not None:
+            for ove in anchor.overlaps:
+                self.file.write('Reference: [' + repr(ove.referenceIndex[0]) + ', ' + repr(
+                    ove.referenceIndex[1] + self.kMerSize - 1) + '] and Query: [' + repr(
+                    ove.queryIndex[0]) + ', ' + repr(ove.queryIndex[1] + self.kMerSize - 1) + ']\n')
         self.file.write('\n')
         self.file.write('Match: ' + repr(match) + ' | ' + 'Mismatch: ' + repr(mismatch) + '\n')
         self.file.write('Aligned: ' + repr(aligned) + '(%)' + '\n')

@@ -7,7 +7,7 @@ from Core.Anchor import Anchor
 
 class SeqAligner:
 
-    def __init__(self, referenceSequence, querySequences, kMerSize, genMers=True):
+    def __init__(self, kMerSize, referenceSequence=None, querySequences=None, genMers=False):
         self.referenceSequence = referenceSequence
         self.querySequences = querySequences
         self.kMerSize = kMerSize
@@ -33,17 +33,23 @@ class SeqAligner:
         else:
             self.queryIndex = index
 
-    def overlap(self):
+        kMerResult = dict()
+        kMerResult['kMers'] = kList
+        kMerResult['index'] = index
+
+        return kMerResult
+
+    def overlap(self, references, referenceIndex, queries, queryIndex):
 
         currentOverlap = Overlap(self.kMerSize)
         startOfOverlap = [0, 0]
         rIndex = 0
 
-        while rIndex < len(self.references):
+        while rIndex < len(references):
             qIndex = 0
-            while qIndex < len(self.queries):
+            while qIndex < len(queries):
 
-                if self.queries[qIndex].key == self.references[rIndex].key:
+                if queries[qIndex].key == references[rIndex].key:
 
                     if currentOverlap.kMer == '':  # if new overlap
 
@@ -51,27 +57,27 @@ class SeqAligner:
                         startOfOverlap[1] = qIndex
 
                         currentOverlap = Overlap(self.kMerSize)
-                        currentOverlap.kMer = self.references[rIndex].key
+                        currentOverlap.kMer = references[rIndex].key
                         currentOverlap.setQueryIndex(qIndex, 0)
                         currentOverlap.setReferenceIndex(rIndex, 0)
 
                         currentOverlap.setQueryIndex(qIndex, 1)
                         currentOverlap.setReferenceIndex(rIndex, 1)
 
-                        self.queries[qIndex].notVisited = False
-                        self.references[rIndex].notVisited = False
+                        queries[qIndex].notVisited = False
+                        references[rIndex].notVisited = False
 
                     else:  # if appending to overlap
 
-                        currentOverlap.kMer += self.references[rIndex].key[-1]
+                        currentOverlap.kMer += references[rIndex].key[-1]
                         currentOverlap.length += 1
                         currentOverlap.setQueryIndex(qIndex, 1)
                         currentOverlap.setReferenceIndex(rIndex, 1)
 
-                        self.queries[qIndex].notVisited = False
-                        self.references[rIndex].notVisited = False
+                        queries[qIndex].notVisited = False
+                        references[rIndex].notVisited = False
 
-                    if rIndex + 1 < self.referenceIndex and qIndex + 1 < self.queryIndex:
+                    if rIndex + 1 < referenceIndex and qIndex + 1 < queryIndex:
                         rIndex = rIndex + 1
                         qIndex = qIndex + 1
 
@@ -186,3 +192,7 @@ class SeqAligner:
     def kMerConstruct(sequence, kMerSize):
         for k in range(0, len(sequence) - (kMerSize - 1)):
             yield sequence[k:k + kMerSize]
+
+    def clear(self):
+        self.overlaps = []
+        self.anchors = []
