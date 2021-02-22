@@ -8,23 +8,15 @@ if __name__ == "__main__":
 
     output = OutputFile('Final/output-test-multi' + '.jres',
                         data.referenceSequence,
-                        data.referenceHeader, 5)
+                        data.referenceHeader, kMerSize=5)
 
     aligner = SeqAligner(kMerSize=5)
     kMerRef = aligner.kMer([], data.referenceSequence, 0, seq='R')
 
-    queryList = [
-        'ACGTAGGTCCTACGGTCCAAAGAT',
-        'TTTTTTTTTTTT',
-        'ACGTACGTCCGGTCCACGTAAAAGAT',
-        'ACGTACGTCCGGTCCATTAGATATAAATATA',
-    ]
-
-    for query in queryList:
+    for q, query in enumerate(data.querySequences):
         kMerQuery = aligner.kMer([], query, 0, seq='Q')
         overlap = aligner.overlap(kMerRef['kMers'], kMerRef['index'], kMerQuery['kMers'], kMerQuery['index'])
         anchor = aligner.bestAnchor(overlap)
 
-        output.writeFile(data.queryHeader, len(data.querySequences), anchor)
+        output.writeFile(data.queryHeaders[q], len(data.querySequences[q]), anchor)
         aligner.clear()
-        print(overlap)

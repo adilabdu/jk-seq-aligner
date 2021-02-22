@@ -1,30 +1,39 @@
 class DataProcess:
 
-    def __init__(self, referenceFile, queryFile, queryType='single'):
+    def __init__(self, referenceFile, queryFile):
         self.referenceSequence = ''
         self.referenceHeader = ''
-        self.querySequences = ''
-        self.queryHeader = ''
+        self.querySequences = []
+        self.queryHeaders = []
 
         self.referenceFile = open(referenceFile, 'r')
-        self.readSequences(self.referenceFile, seq='R')
+        self.readReference(self.referenceFile)
 
         self.queryFile = open(queryFile, 'r')
-        self.readSequences(self.queryFile, seq='Q')
+        self.readQueries(self.queryFile)
 
-    def readSequences(self, file, seq='R'):
-        header = ''
-        sequence = ''
+    def readReference(self, file):
 
         for r, line in enumerate(file):
             if r != 0:
-                sequence += line.rstrip()
+                self.referenceSequence += line.rstrip()
             else:
-                header = line.rstrip()
+                self.referenceHeader = line.rstrip()
 
-        if seq == 'R':
-            self.referenceSequence = sequence
-            self.referenceHeader = header
-        else:
-            self.querySequences = sequence
-            self.queryHeader = header
+    def readQueries(self, file):
+
+        sequences = ''
+
+        for q, line in enumerate(file):
+            if line[0] != '>':
+                sequences += line.rstrip()
+
+            else:
+                self.queryHeaders.append(line.rstrip())
+
+                if sequences != '':
+                    self.querySequences.append(sequences)
+                    sequences = ''
+
+        if sequences != '':
+            self.querySequences.append(sequences)

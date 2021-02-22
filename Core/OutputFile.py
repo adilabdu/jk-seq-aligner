@@ -70,4 +70,5 @@ class OutputFile:
         self.file.write('Match: ' + repr(match) + ' | ' + 'Mismatch: ' + repr(mismatch) + '\n')
         self.file.write('Aligned: ' + repr(aligned) + '(%)' + '\n')
         self.file.write('\n')
+        self.file.write('\n')
         self.index += 1

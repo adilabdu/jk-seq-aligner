@@ -13,41 +13,4 @@ Reference: [20, 25] and Query: [18, 23]
 Match: 18 | Mismatch: 6
 Aligned: 75.0(%)
 
-Query: 1
-Reference: '>JK_941009.1 test_reference, test complete DNA'
-Query:     '>JK_941009.1 test_query, complete DNA, single'
-
-ACGTACGTCCGGTCCACGTAAAAGAT
-                          
---------------------------
-
-
-Match: 0 | Mismatch: 24
-Aligned: 0.0(%)
-
-Query: 2
-Reference: '>JK_941009.1 test_reference, test complete DNA'
-Query:     '>JK_941009.1 test_query, complete DNA, single'
-
-ACGTACGTCCGGTCCACGTAAAAGAT
-||||||||||||||||||||||||||
-ACGTACGTCCGGTCCACGTAAAAGAT                          
-
-Reference: [0, 25] and Query: [0, 25]
-
-Match: 26 | Mismatch: -2
-Aligned: 108.33(%)
-
-Query: 3
-Reference: '>JK_941009.1 test_reference, test complete DNA'
-Query:     '>JK_941009.1 test_query, complete DNA, single'
-
-ACGTACGTCCGGTCCACGTAAAAGAT
-||||||||||||||||         
-ACGTACGTCCGGTCCA                
-
-Reference: [0, 15] and Query: [0, 15]
-
-Match: 16 | Mismatch: 8
-Aligned: 66.67(%)
 
