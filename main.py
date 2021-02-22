@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     data = DataProcess('Dataset/reference', 'Dataset/query')
 
-    output = OutputFile('output-test-multi' + '.jres',
+    output = OutputFile('Final/output-test-multi' + '.jres',
                         data.referenceSequence,
                         data.referenceHeader, 5)
 
