@@ -4,7 +4,7 @@ Python Interpretation to align pairs of sequence reads based on a novel heuristi
 
 Run using the following command:
 ```
-python3 main.py <Reference.fast directory> <Query.fasta directory> <k-mer size> <outputfilename>
+python3 main.py <Reference.fasta directory> <Query.fasta directory> <k-mer size> <outputfilename>
 ```
 
 The final output file generated is found in the root project directory under ```<outputfilename>.jres```
