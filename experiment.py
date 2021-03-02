@@ -121,7 +121,7 @@ if __name__ == '__main__':
     TIME_START = time.time()
 
     # output file
-    file = open(OUTPUT_FILE, 'w')
+    file = open('Final/' + OUTPUT_FILE + '.jres', 'w')
     fileIndex = 0
 
     # read Reference
