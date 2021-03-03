@@ -65,9 +65,11 @@ class Anchor:
         return str(self.overlaps)
 
 
-def kMerConstruct(sequence, kMerSize):
+def kMerConstruct(sequence, kMerSize) -> List[Node]:
+    kMers = [None] * (len(sequence) - (kMerSize - 1))
     for k in range(0, len(sequence) - (kMerSize - 1)):
-        yield sequence[k:k + kMerSize]
+        kMers[k] = Node(sequence[k:k + kMerSize], k)
+    return kMers
 
 
 def anchor(listOfOverlaps: List[Overlap], currentAnchor: Anchor, anc, lastFlag=False):
@@ -153,21 +155,15 @@ if __name__ == '__main__':
         querySequences.append(sequences)
 
     # kMer Reference
-    kMerRef = []
-    referenceIndex = 0
-    for i, kMer in enumerate(kMerConstruct(referenceSequence, KMER_SIZE)):
-        kMerRef.append(Node(kMer, i))
-        referenceIndex = i
+    kMerRef = kMerConstruct(referenceSequence, KMER_SIZE)
+    referenceIndex = len(kMerRef)
 
     # iterate through each query sequence
     for q, query in enumerate(querySequences):
 
         # kMer Query
-        kMerQuery = []
-        queryIndex = 0
-        for i, kMer in enumerate(kMerConstruct(query, KMER_SIZE)):
-            kMerQuery.append(Node(kMer, i))
-            queryIndex = i
+        kMerQuery = kMerConstruct(query, KMER_SIZE)
+        queryIndex = len(kMerQuery)
 
         # overlap
         overlaps = []
